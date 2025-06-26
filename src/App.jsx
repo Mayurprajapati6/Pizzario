@@ -1,11 +1,12 @@
 
 import './App.css'
+import Home from './Pages/Home'
 
 function App() {
   
 
   return (
-    <div className='bg-red-500'>Pizza</div>
+    <Home />
   )
 }
 
