@@ -1,13 +1,13 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import SignUpPresentation from "./SignupPresentation";
-//import { useDispatch } from "react-redux";
-//import { createAccount } from "../../Redux/Slices/AuthSlice";
+import { useDispatch } from "react-redux";
+import { createAccount } from "../../Redux/Slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 // Container for the Signup page
 function Signup() {
 
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [signUpState, setSignUpState] = useState({
@@ -52,11 +52,11 @@ function Signup() {
             return;
         }
 
-        // const apiReponse = await dispatch(createAccount(signUpState));
-        // console.log("Api response", apiReponse);
-        // if(apiReponse.payload.data.success) {
-        //     navigate('/auth/login');
-        // }
+        const apiReponse = await dispatch(createAccount(signUpState));
+        console.log("Api response", apiReponse);
+        if(apiReponse.payload.data.success) {
+            navigate('/auth/login');
+        }
     }
 
     return (

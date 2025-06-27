@@ -1,12 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-// import { useDispatch } from "react-redux";
-// import { login } from "../../Redux/Slices/AuthSlice";
+import { useDispatch } from "react-redux";
+import { login } from "../../Redux/Slices/AuthSlice";
 import LoginPresentation from "./LoginPresentation";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: '',
@@ -36,11 +36,11 @@ function Login() {
             return;
         }
 
-        // const apiReponse = await dispatch(login(loginData));
-        // console.log("Api response", apiReponse);
-        // if(apiReponse.payload.data.success) {
-        //     navigate('/');
-        // }
+        const apiReponse = await dispatch(login(loginData));
+        console.log("Api response", apiReponse);
+        if(apiReponse.payload.data.success) {
+            navigate('/');
+        }
     }
 
     return (
