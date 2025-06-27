@@ -1,31 +1,48 @@
-import IconArrowRight from "../Components/Icons/ArrowRight"
+import IconArrowRight from "../Components/Icons/ArrowRight";
 
-import PizzaImage from "../assets/Images/pizza2.png";
+import PizzaImage from '../assets/Images/pizza2.png';
 import CookingImage from '../assets/Images/cooking1.png';
 import IconPatchCheck from "../Components/Icons/IconPatchCheck";
 import OrderFood from '../assets/Images/orderFood.png';
 import Pickup from '../assets/Images/pickup.png';
 import Enjoy from '../assets/Images/enjoy.png';
 import Layout from "../Layouts/Layout";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllProducts } from "../Redux/Slices/ProductSlice";
+import { Link } from "react-router-dom";
+function Home() { 
+    const dispatch = useDispatch();
 
+    const { productsData } = useSelector((state) => state.product);
 
-function Home() {
+    useEffect(() => {
+        // This will be called when the component mounts
+        dispatch(getAllProducts());
+    }, []);
+
     return (
         <Layout>
         <div>
-            {/* Main Section* */}
+            {/* Hero section */}
             <section
-                className="flex flex-col-reverse items-center justify-center py-5 md:flex-row md:gap-7 bg-gradient-to-r from-amber-50 to-orange-300"
+                className="flex flex-col-reverse items-center justify-center py-5 md:flex-row md:gap-7 bg-gradient-to-r from-amber-50 to-orange-300
+                "
             >
                 <div className="w-4/6 ml-4 text-center md:w-2/6 md:text-left">
+
                     <div className="flex justify-center text-4xl md:justify-normal">
+
                         <h1 className="pb-5 font-bold text-transparent bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text">
+                            
                             Enjoy the Slice {' '}
                         </h1>
                         <h1>
                             😋
                         </h1>
+
                     </div>
+
 
                     <p className="pb-4 text-[#6B7280]">
                         The Pizza App lets you order your favorite pizza from the comfort of your home. 
@@ -50,9 +67,12 @@ function Home() {
                         height={550}
                     />
                 </div>
+
+
             </section>
 
-            {/* Services section* */}
+
+            {/* Services section */}
             <section
                 className="py-4 mt-6 bg-gradient-to-r from-amber-50 to-orange-300"
             >
@@ -160,7 +180,44 @@ function Home() {
 
             </section>
 
+            <div className="mx-auto">
+                <div className="flex flex-wrap justify-center">
+                    {productsData.map((item) => {
+                        return (
+                            item.inStock && (
+                                <div className="p-4 md:w-1/3" key={item._id}>
+                                    <Link to={`/product/${item._id}`}>
+                                        <div className="overflow-hidden border rounded-lg border-opacity-60">
+                                            <img 
+                                                src={item.productImage}
+                                                alt="Pizza Image"
+                                                className="object-cover object-center w-full lg:h-48 md:h-36"
+                                            />
+                                            <div className="p-6 border">
+                                                <h2 className="text-xs font-medium tracking-widest text-gray-400 title-font">
+                                                    {item.category}
+                                                </h2>
+                                                <h1 className="mb-3 text-lg font-medium text-gray-900 title-font">
+                                                    {item.productName}
+                                                </h1>
+                                                <p className="mb-4 text-base leading-relaxed">
+                                                    {item.description}
+                                                </p>
+                                                <p className="text-lg font-medium text-gray-900 title-font">
+                                                    ${item.price}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )
+                        )
+                    })}
+                </div>
+            </div>
+
             
+
         </div>
         </Layout>
     );
