@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getproductDetails } from "../../Redux/Slices/ProductSlice";
 import Layout from "../../Layouts/Layout";
-//import { addProductToCart, getCartDetails, removeProductFromCart } from "../../Redux/Slices/CartSlice";
+import { addProductToCart, getCartDetails, removeProductFromCart } from "../../Redux/Slices/CartSlice";
 
 function ProductDetails() {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const [productDetails, setProductDetails] = useState({});
-    //const [isInCart, setIsInCart] = useState(false); // Check if product is in cart
+    const [isInCart, setIsInCart] = useState(false); // Check if product is in cart
     // 
 
     async function fetchProductDetails() {
@@ -157,7 +157,7 @@ function ProductDetails() {
                   <span className="text-2xl font-medium text-gray-900 title-font">
                     ₹{productDetails?.price}
                   </span>
-                  {/* {isInCart ? (
+                  {isInCart ? (
                     <button
                       className="flex px-6 py-2 ml-auto text-white bg-yellow-500 border-0 rounded focus:outline-none hover:bg-yellow-600"
                       onClick={() => handleRemove(productId)}
@@ -171,7 +171,7 @@ function ProductDetails() {
                     >
                       Add to Cart
                     </button>
-                  )} */}
+                  )}
                 </div>
               </div>
             </div>

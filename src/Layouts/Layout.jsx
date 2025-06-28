@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../Components/Footer';
 import Pizzalogo from '../assets/Images/pizza1.png';
+import CartIcon from '../assets/Images/cart.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../Redux/Slices/AuthSlice';
+import { useEffect } from 'react';
+import { getCartDetails } from '../Redux/Slices/CartSlice';
 
+// eslint-disable-next-line react/prop-types
 function Layout({ children }) {
 
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const { cartsData } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -15,6 +20,22 @@ function Layout({ children }) {
         dispatch(logout());
         
     }
+
+    async function fetchCartDetails() {
+        const res = await dispatch(getCartDetails());
+        console.log("cart details", res)
+        if(res?.payload?.isUnauthorized) {
+            console.log("unauthorized");
+            dispatch(logout());
+        }
+    }
+
+    useEffect(() => {
+        console.log(typeof(isLoggedIn))
+        if(isLoggedIn) {
+            fetchCartDetails();
+        }
+    }, []);
 
     return (
         <div>
@@ -49,17 +70,9 @@ function Layout({ children }) {
                     </ul>
                 </div>
 
-                 <div>
+                <div>
                     <ul className='flex gap-4'>
-                        <li className='hover:text-[#FF9110]'>
-                            {isLoggedIn ? (
-                                <Link onClick={handleLogout}>Logout</Link>
-                            ) : (
-                                <Link to={'/auth/login'}>Login</Link>
-                            )}
-                        </li>
-
-                        {/* {isLoggedIn && (
+                        {isLoggedIn && (
                             <Link to={'/cart'}>
                                 <li>
                                     <img src={CartIcon} className='w-8 h-8 inline' />
@@ -68,11 +81,20 @@ function Layout({ children }) {
                                 </li>
                             </Link>
                             
-                        )} */}
+                        )}
+
+                        <li className='hover:text-[#FF9110]'>
+                            {isLoggedIn ? (
+                                <Link onClick={handleLogout}>Logout</Link>
+                            ) : (
+                                <Link to={'/auth/login'}>Login</Link>
+                            )}
+                        </li>
+
+                        
                     </ul>
                 </div>
 
-                
 
 
             </nav>
@@ -81,7 +103,7 @@ function Layout({ children }) {
 
             <Footer />
         </div>  
-    );
+    )
 }
 
 export default Layout;
